@@ -11,19 +11,19 @@ rustc --version
 echo
 
 if [ ! -d syscall.rs ]; then
-    git clone https://github.com/kmcallister/syscall.rs
+    git clone https://github.com/japaric/syscall.rs
     (cd syscall.rs && cargo build --release)
     echo
 fi
 
 set -x
 
+
 rustc tinyrust.rs \
-    -O -C no-stack-check -C relocation-model=static \
-    -L syscall.rs/target/release
+    -O -C relocation-model=static \
+    --extern sc=syscall.rs/target/release/libsc.rlib
 
-ar x libtinyrust.rlib tinyrust.o
-
+ar x libtinyrust.rlib && mv tinyrust.tinyrust*.o tinyrust.o
 objdump -dr tinyrust.o
 echo
 
