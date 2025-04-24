@@ -1,0 +1,26 @@
+[package]
+name = "tinyrust"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+sc = { git = "https://github.com/japaric/syscall.rs", package = "sc" }
+
+[profile.release]
+opt-level = 3
+debug = false
+rpath = false
+lto = true
+debug-assertions = false
+codegen-units = 1
+panic = "abort"
+incremental = false
+overflow-checks = false
+strip = true
+
+[lib]
+name = "tinyrust"
+crate-type = ["rlib"]
+
+[build]
+rustflags = ["-C", "relocation-model=static"]

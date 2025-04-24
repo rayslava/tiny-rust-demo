@@ -36,7 +36,7 @@ phdr:
 
 phdrsize equ  $ - phdr
 
-incbin "payload.bin"
+incbin PAYLOAD_PATH
 
 filesize equ $ - ehdr
 
