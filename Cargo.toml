@@ -10,7 +10,7 @@ sc = { git = "https://github.com/japaric/syscall.rs", package = "sc" }
 opt-level = 3
 debug = false
 rpath = false
-lto = true
+lto = false
 debug-assertions = false
 codegen-units = 1
 panic = "abort"

@@ -22,6 +22,6 @@ fn write(fd: usize, buf: &[u8]) {
 
 #[unsafe(no_mangle)]
 pub fn main() {
-    write(1, "Hello!\n".as_bytes());
+    write(1, "Hello t!\n".as_bytes());
     exit(0);
 }
