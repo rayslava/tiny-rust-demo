@@ -21,10 +21,20 @@ fn read(fd: usize, buf: &mut [u8], count: usize) -> usize {
 
 pub fn gets(buf: &mut [u8]) -> usize {
     let res = read(0, buf, buf.len());
-    if res > 0 && res < buf.len() {
-        buf[res - 1] = 0;
-    } else {
-        buf[buf.len() - 1] = 0;
+
+    if res == 0 {
+        return 0;
     }
+
+    let idx = if res <= buf.len() {
+        res - 1
+    } else {
+        buf.len() - 1
+    };
+
+    if let Some(slot) = buf.get_mut(idx) {
+        *slot = 0;
+    }
+
     res
 }

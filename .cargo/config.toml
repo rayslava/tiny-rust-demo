@@ -1,6 +1,6 @@
 [build]
 rustflags = [
 	  "-C", "force-frame-pointers=no",
-	  "-C", "relocation-model=static",
-	  "-C", "target-feature=-sse,-sse2"
+	  "-C", "relocation-model=pic",
+	  "-C", "link-dead-code",
 	  ]

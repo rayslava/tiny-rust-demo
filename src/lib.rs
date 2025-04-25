@@ -17,7 +17,7 @@ pub fn hello() {
 }
 
 #[unsafe(no_mangle)]
-pub fn main() {
+pub fn main() -> ! {
     hello();
     exit(0);
 }
