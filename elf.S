@@ -58,7 +58,6 @@ phdr:
 
 phdrsize = . - phdr
 
-    .balign 16
 _start:
     .incbin "payload.bin"
 
