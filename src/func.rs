@@ -5,7 +5,7 @@ pub fn exit(n: usize) -> ! {
     }
 }
 
-pub fn write(fd: usize, buf: &[u8]) {
+fn write(fd: usize, buf: &[u8]) {
     unsafe {
         syscall!(WRITE, fd, buf.as_ptr(), buf.len());
     }
@@ -15,16 +15,16 @@ pub fn puts(buf: &[u8]) {
     write(1, buf);
 }
 
-pub fn read(fd: usize, buf: &mut [u8], count: isize) {
-    unsafe {
-        syscall!(READ, fd, buf.as_ptr(), count);
+fn read(fd: usize, buf: &mut [u8], count: usize) -> usize {
+    unsafe { syscall!(READ, fd, buf.as_ptr(), count) }
+}
+
+pub fn gets(buf: &mut [u8]) -> usize {
+    let res = read(0, buf, buf.len());
+    if res > 0 && res < buf.len() {
+        buf[res - 1] = 0;
+    } else {
+        buf[buf.len() - 1] = 0;
     }
-}
-
-pub fn gets(buf: &mut [u8]) {
-    read(0, buf, buf.len() as isize);
-}
-
-pub fn hello() {
-    puts(b"Hello!\n");
+    res
 }

@@ -21,6 +21,3 @@ strip = true
 [lib]
 name = "tinyrust"
 crate-type = ["rlib"]
-
-[build]
-rustflags = ["-C", "relocation-model=static"]
