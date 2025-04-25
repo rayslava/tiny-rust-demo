@@ -64,7 +64,6 @@
 
 			phdrsize = . - phdr
 
-			.balign 16
 			_start:
 				xor		%rbp, %rbp
 				push 	%rsp
