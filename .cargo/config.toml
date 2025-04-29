@@ -2,5 +2,6 @@
 rustflags = [
 	  "-C", "force-frame-pointers=no",
 	  "-C", "relocation-model=pic",
+	  "-C", "target-feature=-sse,-sse2",
 	  "-C", "link-dead-code",
 	  ]
