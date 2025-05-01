@@ -23,7 +23,7 @@ based: elf.o payload.bin
 
 clean:
 	cargo clean
-	rm -f *.o *.bin payload payload.bin tinyrust based
+	rm -f *.o *.bin payload payload.bin based based
 
 wc: based
 	wc -c based
