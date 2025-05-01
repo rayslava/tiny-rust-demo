@@ -1,0 +1,33 @@
+name: Build
+
+on:
+  push:
+    branches: [ "master", "based" ]
+
+  pull_request:
+    branches: [ "master", "based" ]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: rust:1.86
+
+    steps:
+    - uses: actions/checkout@v4
+      name: Checkout
+    - name: Prepare env
+      run: rustup component add rustfmt clippy
+    - name: Format check
+      run: cargo fmt --all --check
+    - name: Build
+      run: make
+    - name: Upload binary
+      uses: actions/upload-artifact@v4
+      with:
+        name: based
+        path: based
+        if-no-files-found: error
