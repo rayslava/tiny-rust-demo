@@ -89,3 +89,85 @@ impl Termios {
         unsafe { core::mem::transmute(self) }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_winsize_new() {
+        let winsize = Winsize::new();
+
+        assert_eq!(winsize.rows, 0);
+        assert_eq!(winsize.cols, 0);
+        assert_eq!(winsize.xpixel, 0);
+        assert_eq!(winsize.ypixel, 0);
+    }
+
+    #[test]
+    fn test_termios_new() {
+        let termios = Termios::new();
+
+        assert_eq!(termios.iflag, 0);
+        assert_eq!(termios.oflag, 0);
+        assert_eq!(termios.cflag, 0);
+        assert_eq!(termios.lflag, 0);
+        assert_eq!(termios.line, 0);
+
+        // Check that all control chars are 0
+        for i in 0..32 {
+            assert_eq!(termios.cc[i], 0);
+        }
+
+        assert_eq!(termios.ispeed, 0);
+        assert_eq!(termios.ospeed, 0);
+    }
+
+    #[test]
+    fn test_winsize_as_bytes() {
+        let mut winsize = Winsize::new();
+        winsize.rows = 25;
+        winsize.cols = 80;
+
+        // Test immutable bytes
+        {
+            let bytes = winsize.as_bytes();
+            assert_eq!(bytes.len(), 8);
+
+            // Verify bytes contain the expected values
+            // (This depends on the memory layout, which might be platform-specific)
+            // For a basic test, we can just ensure it's not all zeros
+            let all_zeros = bytes.iter().all(|&b| b == 0);
+            assert!(!all_zeros, "Bytes should not be all zeros");
+        }
+
+        // Test mutable bytes separately
+        {
+            let bytes_mut = winsize.as_bytes_mut();
+            assert_eq!(bytes_mut.len(), 8);
+
+            // Verify the mutable bytes can actually be modified
+            // and that it affects the original struct
+            bytes_mut[0] = 42;
+            bytes_mut[1] = 43;
+
+            // Check that modifying the bytes affected the struct
+            // The exact mapping depends on endianness, but we know
+            // the first two bytes should map to rows
+            assert_ne!(winsize.rows, 25, "Modifying bytes should affect the struct");
+        }
+    }
+
+    #[test]
+    fn test_termios_as_bytes() {
+        let termios = Termios::new();
+
+        let bytes = termios.as_bytes();
+        assert_eq!(bytes.len(), 60);
+
+        // Since it's a new termios, all bytes should be zero
+        for &b in bytes {
+            assert_eq!(b, 0);
+        }
+    }
+}

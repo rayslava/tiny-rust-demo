@@ -1,5 +1,6 @@
-#![no_std]
-#![no_main]
+#![cfg_attr(test, allow(unused_imports))]
+#![cfg_attr(not(test), no_std)]
+#![cfg_attr(not(test), no_main)]
 #![crate_type = "rlib"]
 #[macro_use]
 extern crate sc;
@@ -12,10 +13,10 @@ mod termios;
 use editor::run_editor;
 use syscall::{exit, putchar, puts};
 use terminal::{get_termios, get_winsize, set_raw_mode, set_termios};
-use termios::{Termios, Winsize, TCSETS, TCSETSW};
+use termios::{TCSETS, TCSETSW, Termios, Winsize};
 
-// Main function
-#[no_mangle]
+#[cfg(not(test))]
+#[unsafe(no_mangle)]
 pub fn main() -> ! {
     puts(b"BASic EDitor v0.1\r\n");
 
@@ -58,6 +59,5 @@ pub fn main() -> ! {
     } else {
         puts(b"Failed to get terminal attributes\r\n");
     }
-
     exit(0);
 }

@@ -1,4 +1,4 @@
-use crate::syscall::{putchar, puts, read, STDIN, STDOUT};
+use crate::syscall::{STDIN, STDOUT, putchar, puts, read};
 
 // Function to read one character
 fn read_char() -> Option<u8> {
